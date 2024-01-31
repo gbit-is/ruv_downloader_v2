@@ -124,7 +124,10 @@ def download_episode(url,filepath,show_config,episode):
         ydl_opts["outtmpl"] = filepath + "." + file_ending
 
     with YoutubeDL(ydl_opts) as ydl:
-        ydl.download(url)
+        try:
+            ydl.download(url)
+        except:
+            print("ERROR with: " + url)
 
 def download_show(show_config):    
 
@@ -211,7 +214,10 @@ if __name__ == "__main__":
 
 
     for show in shows:
-        download_show(show)
+        try:
+            download_show(show)
+        except:
+            print("Error with   " + show["show_id"])
 
 
 
