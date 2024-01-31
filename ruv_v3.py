@@ -6,7 +6,6 @@ from yt_dlp import YoutubeDL
 #import ffmpeg
 import os
 #from mutagen.easymp4 import EasyMP4Tags
-from config import *
 
 
 
@@ -139,6 +138,8 @@ def download_show(show_config):
     filename_mid = show_config["filename"].split("-")[1].split("{")[0]
 
 
+    show_name = kvs.read("_graphql_cache-" + show_id)["data"]["Program"]["title"]
+
     
 
     for episode in episodes:
@@ -148,6 +149,11 @@ def download_show(show_config):
         existing_files = os.listdir(show_config["dl_folder"])
         files_to_analyze = [ ]
 
+        try:
+            x = show_config["identifier"]
+        except:
+            pprint(show_config)
+
         if show_config["identifier"] == "NAME":
             match_pattern = ep_title
         elif show_config["identifier"] == "ID":
@@ -156,7 +162,7 @@ def download_show(show_config):
             match_pattern = "sfdsfsdfadadaffgrdcgwe"
 
         for file in existing_files:
-            if ep_title in file:
+            if match_pattern in file:
                 already_downloaded = True
             if filename_front in file:
                 files_to_analyze.append(file)
@@ -187,13 +193,13 @@ def download_show(show_config):
         full_file_path = show_config["dl_folder"] + "/" + filename
         episode_url = show_config["show_url"] + episode["id"]
 
+
+
         if not already_downloaded:
-            print("Downloading episode")
+            print("Downloading episode".ljust(30) + show_name.ljust(20) + ep_title.ljust(20) )
             download_episode(episode_url,full_file_path,show_config,episode)
         else:
-            print("Episode already downloaded")
-
-
+            print("Episode already downloaded".ljust(30) + show_name.ljust(20) + ep_title.ljust(20) )
 
 	
 
@@ -201,13 +207,7 @@ def download_show(show_config):
 if __name__ == "__main__":
     kvs = manage_kvs()
 
-
-    show_config = {
-        "show_id"   :   "35276",
-        "show_url"  :   "https://www.ruv.is/krakkaruv/spila/filsi-og-velarnar/35276/",
-        "dl_folder" :   "/Users/gudrun/ruv_v3/output",
-        "filename"  :   "Fílsi og Vélarnar - S01E{NUM} - {NAME}"
-    }
+    from config import *
 
 
     for show in shows:
