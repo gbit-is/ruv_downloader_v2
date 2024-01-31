@@ -137,6 +137,8 @@ def download_show(show_config):
     
     filename_front = show_config["filename"].split("-")[0]
     filename_mid = show_config["filename"].split("-")[1].split("{")[0]
+
+
     
 
     for episode in episodes:
@@ -145,6 +147,13 @@ def download_show(show_config):
 
         existing_files = os.listdir(show_config["dl_folder"])
         files_to_analyze = [ ]
+
+        if show_config["identifier"] == "NAME":
+            match_pattern = ep_title
+        elif show_config["identifier"] == "ID":
+            match_pattern = episode["id"]
+        else:
+            match_pattern = "sfdsfsdfadadaffgrdcgwe"
 
         for file in existing_files:
             if ep_title in file:
@@ -167,8 +176,13 @@ def download_show(show_config):
         ep_num = max(ep_nums)
         filename = show_config["filename"]
 
-
-        filename = filename.replace("{NAME}",ep_title).replace("{NUM}",str(ep_num))
+        
+        if "{NAME}" in filename:
+            filename = filename.replace("{NAME}",ep_title)
+        if "{NUM}" in filename:
+            filename = filename.replace("{NUM}",str(ep_num))
+        if "{ID}" in filename:
+            filename = filename.replace("{ID}",episode["id"])
 
         full_file_path = show_config["dl_folder"] + "/" + filename
         episode_url = show_config["show_url"] + episode["id"]

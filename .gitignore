@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# cache db
+.kvs.db
+
 # C extensions
 *.so
 
