@@ -3,9 +3,9 @@ import json
 import dbm
 import time
 from yt_dlp import YoutubeDL
-import ffmpeg
+#import ffmpeg
 import os
-from mutagen.easymp4 import EasyMP4Tags
+#from mutagen.easymp4 import EasyMP4Tags
 from config import *
 
 
