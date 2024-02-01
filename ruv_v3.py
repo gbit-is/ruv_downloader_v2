@@ -209,10 +209,10 @@ def download_show(show_config):
 
 
         if not already_downloaded:
-            print("Downloading episode".ljust(30) + show_name.ljust(20) + ep_title.ljust(20) )
+            print("Downloading episode".ljust(30) + show_name.ljust(30) + ep_title.ljust(20) )
             download_episode(episode_url,full_file_path,show_config,episode)
         else:
-            print("Episode already downloaded".ljust(30) + show_name.ljust(20) + ep_title.ljust(20) )
+            print("Episode already downloaded".ljust(30) + show_name.ljust(30) + ep_title.ljust(20) )
 
 	
 
