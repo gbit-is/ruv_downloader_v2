@@ -94,9 +94,12 @@ def get_show_data(show_id):
 
 def list_episodes(show_id):
 
+
     gql_data = get_show_data(show_id)
 
+
     data = gql_data["data"]["Program"]
+
 
     show_data = {
             "name"  :   data["title"],
@@ -126,7 +129,8 @@ def download_episode(url,filepath,show_config,episode):
     with YoutubeDL(ydl_opts) as ydl:
         try:
             ydl.download(url)
-        except:
+        except Exception as e:
+            print(e)
             print("ERROR with: " + url)
 
 def download_show(show_config):    
@@ -135,16 +139,22 @@ def download_show(show_config):
 
 
     list_episodes(show_id)
+
+
     episodes = kvs.read("_graphql_cache-" + show_id)["data"]["Program"]["episodes"]
     
+
     filename_front = show_config["filename"].split("-")[0]
     filename_mid = show_config["filename"].split("-")[1].split("{")[0]
 
 
     show_name = kvs.read("_graphql_cache-" + show_id)["data"]["Program"]["title"]
 
-    
 
+
+
+
+    
     for episode in episodes:
         already_downloaded = False
         ep_title = episode["title"]
@@ -207,16 +217,21 @@ def download_show(show_config):
 	
 
 
+
+
+
 if __name__ == "__main__":
     kvs = manage_kvs()
 
     from config import *
 
-
+    
     for show in shows:
         try:
             download_show(show)
-        except:
+        except Exception as e:
+            print(e)
+
             print("Error with   " + show["show_id"])
 
 
