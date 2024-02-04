@@ -1,0 +1,34 @@
+smastund_1 = {
+        "show_id"   :   "34298",
+        "show_url"  :   "https://www.ruv.is/krakkaruv/spila/smastund/34298/",
+        "dl_folder" :   "/path/to/folder",
+        "filename"  :   "Smástund - S01E{NUM} - {NAME} ({ID})",
+        "identifier":   "NAME"
+}
+
+
+# Búa til config 
+# Finndu þátt, t.d: https://www.ruv.is/krakkaruv/spila/krakkafrettir/30712/alnldg
+# þú splittar þessur url-i í show_id og show_url
+
+#				     nafn á þætti        episode_id (ekki notað)
+#                                    |                   |
+# https://www.ruv.is/krakkaruv/spila/krakkafrettir/30712/alnldg
+#						   |
+#						   show_id
+
+# show url: https://www.ruv.is/krakkaruv/spila/krakkafrettir/30712/
+# show_id : 30712
+# dl_folder: Slóðin sem þú vilt láta þáttinn enda í 
+# filename : Nafnið á skjalinu, setur breytur til þess að yfirskrifa ekki sama skjalið aftur og aftur
+#	{NUM} er semi-randomly generated númer á þætti í seríu *
+#	{NAME} er nafnið á þættinum eins og rúv segir það, Stundum er það bara "þáttur 7" eða dagsetning þáttar en oftast almennilegt nafn
+#	{ID} er unique identifier á þættinum (held ég allavega), hugmyndin með honum er að nota hann til að downloada ekki sama þættinum tvisvar
+# identifier: 	er það sem er notað til þess að athuga hvort að búið sé að downloada þættinum áður
+# 		einu valid gildin fyrir það eru "NAME" eða "ID", "NAME" býður náttúrulega minni nákvæmni, en þú átt þætti downloadaða í möppuni 
+#		sem nýju enda í, þá býður þetta uppá að kannski ekki downloada þeim aftur, ID notar unique identifierinn, en þá þarf hann líka að vera
+#		í filename configginu, annars mun hann downloada þessu aftur og aftur og aftur
+
+
+
+shows = [ smastund_1 ]

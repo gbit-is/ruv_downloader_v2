@@ -3,9 +3,9 @@ import json
 import dbm
 import time
 from yt_dlp import YoutubeDL
-#import ffmpeg
 import os
-#from mutagen.easymp4 import EasyMP4Tags
+import sys
+import re
 
 
 
@@ -162,33 +162,40 @@ def download_show(show_config):
         existing_files = os.listdir(show_config["dl_folder"])
         files_to_analyze = [ ]
 
-        try:
-            x = show_config["identifier"]
-        except:
-            pprint(show_config)
+        if "identifier" in show_config:
 
-        if show_config["identifier"] == "NAME":
-            match_pattern = ep_title
-        elif show_config["identifier"] == "ID":
-            match_pattern = episode["id"]
-        else:
-            match_pattern = "sfdsfsdfadadaffgrdcgwe"
+
+            if show_config["identifier"] == "NAME":
+                match_pattern = ep_title
+            elif show_config["identifier"] == "ID":
+                match_pattern = episode["id"]
+            else:
+                match_pattern = False
 
         for file in existing_files:
-            if match_pattern in file:
-                already_downloaded = True
+            if match_pattern:
+                if match_pattern in file:
+                    already_downloaded = True
             if filename_front in file:
                 files_to_analyze.append(file)
 
         ep_nums = [ 1 ]
         if len(files_to_analyze) > 0:
             for file in files_to_analyze:
-                ep_num = file.split("-")[1].replace(filename_mid,"")
+
+                try:
+                    ep_num = file.split("-")[1].strip()
+                except Exception as e:
+                    print(e)
+
+                if "e" in ep_num.lower():
+                    ep_num = re.split("e", ep_num, flags=re.IGNORECASE)[1]
+
                 try:
                     ep_num = int(ep_num)
                     ep_nums.append(ep_num)
-                except:
-                    pass
+                except Exception as e:
+                    print(e)
 
             
 
@@ -204,7 +211,12 @@ def download_show(show_config):
             filename = filename.replace("{ID}",episode["id"])
 
         full_file_path = show_config["dl_folder"] + "/" + filename
-        episode_url = show_config["show_url"] + episode["id"]
+
+
+        show_url = show_config["show_url"]
+        if not show_url.endswith("/"):
+            show_url = show_url + "/"
+        episode_url = show_url + episode["id"]
 
 
 
@@ -215,6 +227,13 @@ def download_show(show_config):
             print("Episode already downloaded".ljust(30) + show_name.ljust(30) + ep_title.ljust(20) )
 
 	
+def print_help():
+
+    print("\nWrong Usage.\nUsage is:")
+    print(sys.argv[0] + " <download|.....>")
+    print("\n..... currently there is only download ...\n")
+
+
 
 
 
@@ -225,16 +244,24 @@ if __name__ == "__main__":
 
     from config import *
 
-    
-    for show in shows:
-        try:
-            download_show(show)
-        except Exception as e:
-            print(e)
+    if len(sys.argv) != 2:
+        print_help()
+        exit(1)
 
-            print("Error with   " + show["show_id"])
+    if "download" in sys.argv[1].lower():
 
+        from config import *
 
+        for show in shows:
+            try:
+                download_show(show)
+            except Exception as e:
+                print(e)
+                print("Error with   " + show["show_id"])
+
+    else:
+        print_help()
+        exit(1)
 
 
 
