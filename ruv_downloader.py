@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import requests
 import json
 import dbm
@@ -6,6 +8,9 @@ from yt_dlp import YoutubeDL
 import os
 import sys
 import re
+import os 
+script_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+
 
 
 
@@ -242,7 +247,24 @@ def print_help():
 if __name__ == "__main__":
     kvs = manage_kvs()
 
-    from config import *
+    config_file = script_dir + "/config.py"
+
+    if not os.path.exists(config_file):
+        print("")
+        print("config.py not found")
+        print("look at config.py.example to create a config.py file")
+        print("")
+        exit(1)
+
+    try:
+        from config import *
+    except Exception as e:
+        print("!!!UNABLE TO IMPORT CONFIG!!!")
+        print("Error is:")
+        print(e)
+        exit()
+
+
 
     if len(sys.argv) != 2:
         print_help()
