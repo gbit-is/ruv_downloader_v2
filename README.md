@@ -1,8 +1,10 @@
 # ruv_downloader
 
 # About
-Hugbúnaður til að sjálfvirkt búa til öryggisafrit af þáttum á rúv og save-ar sem mp4
-Ath: Ennþá mjög hrátt, ekkert error handling t.d
+Hugbúnaður til að sjálfvirkt búa til öryggisafrit af þáttum á rúv og save-ar sem mp4   
+Ath: Ennþá mjög hrátt, vantar enn þónokkuð af virkni sem var í eldri útgáfu  
+
+
 
 Kemur í staðinn fyrir [gömlu útgáfuna](https://github.com/gbit-is/ruv_downloader) sem hætti að virka í byrjun 2024
 
