@@ -1,8 +1,0 @@
- = {
-        "show_id"   :
-        "show_url"  :
-        "dl_folder" :   "...",
-        "filename"  :   " - S01E{NUM} - {NAME} ({ID})",
-        "identifier":   "ID"
-}
-
