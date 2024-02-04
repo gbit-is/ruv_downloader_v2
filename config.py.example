@@ -29,6 +29,6 @@ smastund_1 = {
 #		sem nýju enda í, þá býður þetta uppá að kannski ekki downloada þeim aftur, ID notar unique identifierinn, en þá þarf hann líka að vera
 #		í filename configginu, annars mun hann downloada þessu aftur og aftur og aftur
 
-
+# Svo þarftu að bæta þættinum í listann "shows"  svo hann sé virkjaður 
 
 shows = [ smastund_1 ]
