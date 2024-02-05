@@ -205,6 +205,7 @@ def download_show(show_config):
             
 
         ep_num = max(ep_nums)
+        ep_num += 1
         filename = show_config["filename"]
 
         
