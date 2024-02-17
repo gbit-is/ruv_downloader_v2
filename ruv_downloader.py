@@ -200,7 +200,7 @@ def download_show(show_config):
                     ep_num = int(ep_num)
                     ep_nums.append(ep_num)
                 except Exception as e:
-                    print(e)
+                    print("Unable to determine s{NUM}e{NUM} of file: " + file)
 
             
 
