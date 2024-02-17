@@ -26,7 +26,6 @@ def print_help():
 
 
 
-
 if len(sys.argv) == 1:
     print_help()
     exit()
