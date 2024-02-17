@@ -98,12 +98,25 @@ class manage_kvs:
 
         return data
 
+    def decode_key(self,key):
+        key_data_raw = self.dbm_handle[key].decode()
+
+        try:
+            key_data = json.loads(key_data_raw)
+            is_json = True
+        except:
+            key_data = key_data_raw
+            is_json = False
+
+        return key_data, is_json
+
+            
 
 
 
-def pprint(msg):
+def pprint(msg,ens_ascii=True):
     try:
-        print(json.dumps(msg,indent=2))
+        print(json.dumps(msg,indent=2,ensure_ascii=ens_ascii))
     except:
         print(msg)
 
