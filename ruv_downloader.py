@@ -62,8 +62,41 @@ class manage_kvs:
         else:
             return True
 
+    def list_keys(self,do_print=False):
+
+
+        data = { }
+        data["keys"] = { }
+        keys = self.dbm_handle.keys()
+        pads = [ 30, 50 ]
+        total_pad = sum(pads)
+        header = "key Name".ljust(pads[0]) + "Key Info".ljust(pads[1]) + "\n" + "".ljust(total_pad,"-")
+
+        if do_print:
+            print(header)
+
+
+        for key in keys:
+            key_name = key.decode()
+            key_data = self.dbm_handle[key].decode()
+
+
+            try:
+                key_data_json = json.loads(key_data)
+                show_name = key_data_json["data"]["Program"]["title"]
+                key_info = show_name
+                data["keys"]["key_name"] = key_data_json
+            except:
+                key_info = "no show name found"
+                data["keys"][key_name] = key_data
+
+            line = key_name.ljust(pads[0]) + key_info.ljust(pads[1])
+
+            if do_print:
+                print(line)
         
 
+        return data
 
 
 
