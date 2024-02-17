@@ -110,6 +110,13 @@ class manage_kvs:
 
         return key_data, is_json
 
+    def delete_key(self,key):
+
+        if not self.exists(key):
+            print("Key " + key + " does not exist")
+        else:
+            del self.dbm_handle[key]
+            print("Key " + key + " deleted" )
             
 
 
