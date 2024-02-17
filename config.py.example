@@ -31,4 +31,12 @@ smastund_1 = {
 
 # Svo þarftu að bæta þættinum í listann "shows"  svo hann sé virkjaður 
 
+# Fyrir .... overall stillingar, þá er hægt að gera breytuna "SETTINGS"
+
+SETTINGS = {
+	"download_poster"	:	False
+
+}
+
+
 shows = [ smastund_1 ]

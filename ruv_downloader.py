@@ -10,9 +10,13 @@ import sys
 import re
 import os 
 script_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+import urllib.request
 
 
 
+
+
+image_file_formats = ["ase","art","bmp","blp","cd5","cit","cpt","cr2","cut","dds","dib","djvu","egt","exif","gif","gpl","grf","icns","ico","iff","jng","jpeg","jpg","jfif","jp2","jps","lbm","max","miff","mng","msp","nef","nitf","ota","pbm","pc1","pc2","pc3","pcf","pcx","pdn","pgm","PI1","PI2","PI3","pict","pct","pnm","pns","ppm","psb","psd","pdd","psp","px","pxm","pxr","qfx","raw","rle","sct","sgi","rgb","int","bw","tga","tiff","tif","vtf","xbm","xcf","xpm","3dv","amf","ai","awg","cgm","cdr","cmx","dxf","e2d","egt","eps","fs","gbr","odg","svg","stl","vrml","x3d","sxd","v2d","vnd","wmf","emf","art","xar","png","webp","jxr","hdp","wdp","cur","ecw","iff","lbm","liff","nrrd","pam","pcx","pgf","sgi","rgb","rgba","bw","int","inta","sid","ras","sun","tga","heic","heif"]
 
 
 
@@ -171,7 +175,6 @@ def list_episodes(show_id):
 def yt_dlp_monitor(d):
 
     filename  = d.get('info_dict').get('_filename')
-    #kvs.write("filename_tmp",json.dumps(filename))
 
 def download_episode(url,filepath,show_config,episode):
 
@@ -199,18 +202,48 @@ def download_show(show_config):
     list_episodes(show_id)
 
 
-    episodes = kvs.read("_graphql_cache-" + show_id)["data"]["Program"]["episodes"]
+    graphql_data = kvs.read("_graphql_cache-" + show_id)
+
+    #episodes = kvs.read("_graphql_cache-" + show_id)["data"]["Program"]["episodes"]
+    episodes = graphql_data["data"]["Program"]["episodes"]
     
 
     filename_front = show_config["filename"].split("-")[0]
     filename_mid = show_config["filename"].split("-")[1].split("{")[0]
 
 
-    show_name = kvs.read("_graphql_cache-" + show_id)["data"]["Program"]["title"]
+    #show_name = kvs.read("_graphql_cache-" + show_id)["data"]["Program"]["title"]
+    show_name = graphql_data["data"]["Program"]["title"]
 
 
 
+    existing_files = os.listdir(show_config["dl_folder"]) 
 
+    if download_posters:
+
+        show_poster_files = [ ]
+        for iff in image_file_formats:
+            spf = "show." + iff
+            show_poster_files.append(spf)
+
+        if not any(x in show_poster_files for x in existing_files):
+            try:
+                show_poster_url = graphql_data["data"]["Program"]["image"]
+                file_type = httpx.head(show_poster_url).headers['Content-Type'].split("/")[1]
+            
+                file_name = "show." + file_type
+                file_path = show_config["dl_folder"] + "/" + file_name
+
+                urllib.request.urlretrieve(show_poster_url,file_path)
+
+            
+
+            except Exception as e:
+                print("Unable to get poster for show: " + show_name)
+                print(e)
+        
+
+    exit()
 
     
     for episode in episodes:
@@ -317,6 +350,24 @@ if __name__ == "__main__":
         print("Error is:")
         print(e)
         exit()
+
+    download_posters = False
+
+
+    if 'SETTINGS' in locals():
+        if "download_posters" in SETTINGS:
+            if SETTINGS["download_posters"]:
+                try:
+                    import httpx
+                    download_posters = True
+                except:
+                    print("\n-------------------------")
+                    print("Unable to import httpx, posters will not be downloaded")
+                    print("Install httpx to fix this ( pip install httpx")
+                    print("-------------------------\n")
+
+
+
 
 
 
