@@ -243,7 +243,6 @@ def download_show(show_config):
                 print(e)
         
 
-    exit()
 
     
     for episode in episodes:
