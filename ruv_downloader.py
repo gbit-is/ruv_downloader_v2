@@ -317,6 +317,7 @@ def download_show(show_config):
         else:
             print("Episode already downloaded".ljust(30) + show_name.ljust(30) + ep_title.ljust(20) )
 
+
 	
 def print_help():
 
@@ -351,6 +352,7 @@ if __name__ == "__main__":
         exit()
 
     download_posters = False
+    stop_on_fail = False
 
 
     if 'SETTINGS' in locals():
@@ -365,6 +367,8 @@ if __name__ == "__main__":
                     print("Install httpx to fix this ( pip install httpx")
                     print("-------------------------\n")
 
+        if "stop_on_fail" in SETTINGS:
+            stop_on_fail = SETTINGS["stop_on_fail"]
 
 
 
@@ -378,12 +382,16 @@ if __name__ == "__main__":
 
         from config import *
 
+
         for show in shows:
             try:
                 download_show(show)
             except Exception as e:
                 print(e)
                 print("Error with   " + show["show_id"])
+                if stop_on_fail:
+                    print("STOP ON FAIL ENABLED\nExiting")
+                    exit(1)
 
     else:
         print_help()
